@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Chat</title>
+</head>
+<style>
+    form {
+        width: 406px;
+        height: 500px;
+        border: 4px solid #98bcde;
+        border-radius: 10px;
+        margin: 0 auto;
+        background-color: #eceff9;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+    }
+    h3 {
+        color: #92acdc;
+        text-align: center;
+        font-size: 26px;
+    }
+    textarea {
+        resize: none;
+        font-size: 20px;
+        width: 401px;
+        height: 160px;
+    }
+    codearea {
+        resize: none;
+        font-size: 20px;
+        width: 401px;
+        height: 40px;
+    }
+    .msg {
+        width: 300px;
+        height: 40px;
+        text-indent: 10px;
+        font-size: 20px;
+        margin: 0 auto;
+        outline: none;
+    }
+    .code {
+        width: 300px;
+        height: 40px;
+        text-indent: 10px;
+        font-size: 20px;
+        margin: 0 auto;
+        outline: none;
+    }
+    .btn {
+        width: 120px;
+        height: 46px;
+        background-color: #d8f1f9;
+        border-radius: 6px;
+        border: 1px solid #98bcde;
+        font-size: 18px;
+        color: #92acdc;
+        font-weight: bold;
+    }
+
+</style>
+<body>
+<script type="text/javascript">
+    var socket;
+    if (!window.WebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+    if (window.WebSocket) {
+        socket = new WebSocket("ws://192.168.1.105:8090/ws");
+        socket.onmessage = function(event) {
+            console.log(event);
+            console.log("接收到消息");
+            var responsetext = document.getElementById('responseText');
+            var LoginCodeText = document.getElementById("LoginCodeText");
+            if(typeof event.data==="number"){
+                LoginCodeText.value = event.data;
+            }else{
+                responsetext.value = event.data;
+            }
+        };
+        socket.onopen = function(event) {
+            console.log(event);
+            var ta = document.getElementById('responseText');
+            ta.value = "连接开启!";
+        };
+        socket.onclose = function(event) {
+            console.log(event);
+            var ta = document.getElementById('responseText');
+            ta.value = ta.value + "连接被关闭";
+        };
+    } else {
+        alert("你的浏览器不支持 WebSocket！");
+    }
+
+    function login(value) {
+        if (!window.WebSocket) {
+            return;
+        }
+        if (socket.readyState == WebSocket.OPEN) {
+            var message = {
+                type: "login",
+                token: value
+            }
+            socket.send(JSON.stringify(message));
+        } else {
+            alert("连接没有开启.");
+        }
+    }
+    var code;
+    function getLoginCode() {
+        if(!window.WebSocket){
+            return;
+        }
+        if(socket.readyState==WebSocket.OPEN){
+            var logging = {
+                type:"code",
+                token:null
+            }
+            socket.send(JSON.stringify(logging));
+        }else{
+            alert("连接没有开启");
+        }
+    }
+
+
+    function sendGroup(code,value) {
+        if (!window.WebSocket) {
+            return;
+        }
+        if (socket.readyState == WebSocket.OPEN) {
+            var message = {
+                type: "sendGroup",
+                token: code,
+                value: value
+            }
+            socket.send(JSON.stringify(message));
+        } else {
+            alert("连接没有开启.");
+        }
+    }
+
+
+    window.onbeforeunload = function(event) {
+        event.returnValue = "刷新提醒";
+    };
+</script>
+<form onsubmit="return false;">
+    <h3>CloudClipBoard</h3>
+    <textarea id="responseText"></textarea>
+    <codearea id="LoginCodeText"></codearea>
+    <br>
+    <input class='msg' type="text" name="message" placeholder='输入剪切板内容' value="">
+    <input class='code' type="text" name="LoginCode" placeholder='登录码' value="">
+    <input class='btn' type="button" value="获取登录码" onclick="getLoginCode()">
+    <input class='btn' type="button" value="登录" onclick="login(this.form.LoginCode.value)">
+    <input class='btn' type="button" value="发送到多设备" onclick="sendGroup(this.form.LoginCode.value,this.form.message.value)">
+</form>
+<br>
+<br>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+</body>
+</html>
