@@ -6,8 +6,8 @@
 目前只实现了核心功能，只能算是一个比较简陋的demo。接下来会不断更新的。
 
 ## 项目相关
-- [项目研发日志更新](https://github.com/luxinfeng/cloudclipboard/doc/Project-Log-cn.md)
-- [项目设计思路](https://github.com/luxinfeng/cloudclipboard/doc/design_cn.md)
+- [项目研发日志更新](https://github.com/luxinfeng/Cloudclipboard/blob/dev/doc/Project-Log-cn.md)
+- [项目设计思路](https://github.com/luxinfeng/cloudclipboard/blob/dev/doc/design_cn.md)
 - [项目文档](https://github.com/luxinfeng/Cloudclipboard/wiki/_new)
 
 ## To Do List
