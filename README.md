@@ -1,2 +1,24 @@
-# Cloudclipboard
-This is a Cloudclipboard
+## 简介
+
+**Cloudclipboard**
+
+这是一个基于Netty和WebSocket的云剪贴板。该剪贴板使用网页登录，借助该剪贴板，我们可以实现在多个平台之间传递剪贴板的内容。
+目前只实现了核心功能，只能算是一个比较简陋的demo。接下来会不断更新的。
+
+## 项目相关
+- [项目研发日志更新](https://github.com/luxinfeng/cloudclipboard/doc/Project-Log-cn.md)
+- [项目设计思路](https://github.com/luxinfeng/cloudclipboard/doc/design_cn.md)
+- [项目文档](https://github.com/luxinfeng/Cloudclipboard/wiki/_new)
+
+## To Do List
+- 登录存储，退出删除
+- 用户认证机制（目前只使用随机登录码，不安全）
+- 设置用户登录时长限制
+- 参数调优
+- 增加使用账户密码登录方式
+- 加密通信
+- 保存用户的一定数量的历史记录
+- 后期会考虑搭建Netty集群
+
+
+
