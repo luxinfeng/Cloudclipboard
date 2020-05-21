@@ -1,4 +1,4 @@
-package com.example.netty.WebSocket.util;
+package com.luxinfeng.cloudclipboard.WebSocket.util;
 
 
 public class LoginCode {

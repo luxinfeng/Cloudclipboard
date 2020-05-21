@@ -1,4 +1,4 @@
-package com.example.netty.WebSocket.Server;
+package com.luxinfeng.cloudclipboard.WebSocket.Server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;

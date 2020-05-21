@@ -1,4 +1,4 @@
-package com.example.netty.WebSocket.Handler;
+package com.luxinfeng.cloudclipboard.WebSocket.Handler;
 
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;

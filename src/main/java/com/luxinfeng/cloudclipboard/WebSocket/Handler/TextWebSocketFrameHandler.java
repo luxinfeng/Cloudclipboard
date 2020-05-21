@@ -1,21 +1,15 @@
-package com.example.netty.WebSocket.Handler;
+package com.luxinfeng.cloudclipboard.WebSocket.Handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.netty.WebSocket.LoginConfig.CodeContainer;
-import com.example.netty.WebSocket.util.LoginCode;
-import com.sun.org.apache.bcel.internal.classfile.Code;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import com.luxinfeng.cloudclipboard.WebSocket.LoginConfig.CodeContainer;
+import com.luxinfeng.cloudclipboard.WebSocket.util.LoginCode;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
-import io.netty.util.CharsetUtil;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**

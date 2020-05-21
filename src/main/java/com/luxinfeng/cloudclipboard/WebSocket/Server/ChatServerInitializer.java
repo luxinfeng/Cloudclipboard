@@ -1,7 +1,7 @@
-package com.example.netty.WebSocket.Server;
+package com.luxinfeng.cloudclipboard.WebSocket.Server;
 
-import com.example.netty.WebSocket.Handler.HttpRequestHandler;
-import com.example.netty.WebSocket.Handler.TextWebSocketFrameHandler;
+import com.luxinfeng.cloudclipboard.WebSocket.Handler.HttpRequestHandler;
+import com.luxinfeng.cloudclipboard.WebSocket.Handler.TextWebSocketFrameHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

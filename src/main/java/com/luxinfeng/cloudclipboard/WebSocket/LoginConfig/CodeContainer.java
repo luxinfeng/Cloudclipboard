@@ -1,4 +1,4 @@
-package com.example.netty.WebSocket.LoginConfig;
+package com.luxinfeng.cloudclipboard.WebSocket.LoginConfig;
 
 import io.netty.channel.ChannelHandlerContext;
 
