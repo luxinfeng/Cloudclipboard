@@ -1,6 +1,7 @@
 package com.luxinfeng.cloudclipboard.WebSocket.LoginConfig;
 
 import io.netty.channel.ChannelHandlerContext;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,12 +11,13 @@ import java.util.List;
 public class CodeContainer {
     private static HashMap<String, List<ChannelHandlerContext>> map = new HashMap<>();
     private static HashSet<String> set = new HashSet<>();
+    private static Jedis jedis = new Jedis("127.0.0.1", 6379);
 
     public void addCode(String str){
-        set.add(str);
+        jedis.setex(str,1800,str);
     }
-    public boolean containsCode(String code){
-        return set.contains(code);
+    public String containsCode(String code){
+        return jedis.get(code);
     }
 
     public void addUser(String code,ChannelHandlerContext ctx){

@@ -10,10 +10,16 @@
 - [项目设计思路](https://github.com/luxinfeng/cloudclipboard/blob/dev/doc/design_cn.md)
 - [项目文档](https://github.com/luxinfeng/Cloudclipboard/wiki/_new)
 
-## To Do List
-- 登录存储，退出删除
-- 用户认证机制（目前只使用随机登录码，不安全）
+## Done List
+
 - 设置用户登录时长限制
+- 登录存储，退出删除（一定时间后自动清除）
+
+
+## To Do List
+- ~~登录存储，退出删除~~
+- 用户认证机制（目前只使用随机登录码，不安全）
+- ~~设置用户登录时长限制~~
 - 参数调优
 - 增加使用账户密码登录方式
 - 加密通信

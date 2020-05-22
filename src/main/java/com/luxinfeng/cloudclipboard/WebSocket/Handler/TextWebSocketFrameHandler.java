@@ -32,8 +32,6 @@ public class TextWebSocketFrameHandler
                 .ServerHandshakeStateEvent.HANDSHAKE_COMPLETE) {
             ctx.pipeline().remove(HttpRequestHandler.class);
 
-//            group.writeAndFlush(new TextWebSocketFrame(
-//                    "Client " + ctx.channel()+ " joined"));
             group.add(ctx.channel());
         } else {
             super.userEventTriggered(ctx, evt);
@@ -53,12 +51,11 @@ public class TextWebSocketFrameHandler
             String code = logincode.getCode();
             System.out.println(code);
             codeContainer.addCode(code);
-//            ctx.channel().writeAndFlush(Unpooled.copiedBuffer(code, CharsetUtil.UTF_8));
             ctx.channel().writeAndFlush(new TextWebSocketFrame("code"+code));
             System.out.println("成功获取登录码");
         }else if(type.equals("login")){
             String code = jsonObject.get("token").toString();
-            if(!codeContainer.containsCode(code)){
+            if(codeContainer.containsCode(code)==null){
                 throw new IllegalStateException("当前登录码无效，请重新申请");
             }else{
                 codeContainer.addUser(code,ctx);
@@ -67,18 +64,19 @@ public class TextWebSocketFrameHandler
         }else if(type.equals("sendGroup")){
             System.out.println("成功发送到多设备");
             String code = jsonObject.get("token").toString();
-            if(codeContainer.containsCode(code)){
+            if(codeContainer.containsCode(code)!=null){
                 List<ChannelHandlerContext> list = codeContainer.getUser(code);
                 System.out.println(list.size());
                 for(ChannelHandlerContext user:list){
-//                    ByteBuf buf = Unpooled.copiedBuffer(jsonObject.get("value").toString(), CharsetUtil.UTF_8);
                     System.out.println(jsonObject.get("value"));
                     user.channel().writeAndFlush(new TextWebSocketFrame("clip"+jsonObject.get("value").toString()));
 
                 }
             }
+        }else if(type.equals("heartCheck")){
+            ctx.channel().writeAndFlush(new TextWebSocketFrame("heartCheck reponse"));
+            System.out.println("This is a heartCheck");
         }
-//        group.writeAndFlush(msg.retain());
     }
 
 
