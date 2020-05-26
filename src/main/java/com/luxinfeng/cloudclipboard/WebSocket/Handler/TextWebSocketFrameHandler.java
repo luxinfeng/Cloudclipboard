@@ -46,22 +46,7 @@ public class TextWebSocketFrameHandler
         String type=jsonObject.get("type").toString();
 
         CodeContainer codeContainer = new CodeContainer();
-        if(type.equals("code")){
-            LoginCode logincode = new LoginCode();
-            String code = logincode.getCode();
-            System.out.println(code);
-            codeContainer.addCode(code);
-            ctx.channel().writeAndFlush(new TextWebSocketFrame("code"+code));
-            System.out.println("成功获取登录码");
-        }else if(type.equals("login")){
-            String code = jsonObject.get("token").toString();
-            if(codeContainer.containsCode(code)==null){
-                throw new IllegalStateException("当前登录码无效，请重新申请");
-            }else{
-                codeContainer.addUser(code,ctx);
-                System.out.println("登录成功");
-            }
-        }else if(type.equals("sendGroup")){
+        if(type.equals("sendGroup")){
             System.out.println("成功发送到多设备");
             String code = jsonObject.get("token").toString();
             if(codeContainer.containsCode(code)!=null){
@@ -69,12 +54,12 @@ public class TextWebSocketFrameHandler
                 System.out.println(list.size());
                 for(ChannelHandlerContext user:list){
                     System.out.println(jsonObject.get("value"));
-                    user.channel().writeAndFlush(new TextWebSocketFrame("clip"+jsonObject.get("value").toString()));
+                    user.writeAndFlush(new TextWebSocketFrame("clip"+jsonObject.get("value").toString()));
 
                 }
             }
         }else if(type.equals("heartCheck")){
-            ctx.channel().writeAndFlush(new TextWebSocketFrame("heartCheck reponse"));
+            ctx.writeAndFlush(new TextWebSocketFrame("heartCheck reponse"));
             System.out.println("This is a heartCheck");
         }
     }

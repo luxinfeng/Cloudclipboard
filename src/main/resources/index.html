@@ -80,16 +80,19 @@
             }else{
                 responsetext.value = event.data;
             }
+            heartCheck.start();
         };
         socket.onopen = function(event) {
             console.log(event);
             var ta = document.getElementById('responseText');
             ta.value = "连接开启!";
+            heartCheck.start();
         };
         socket.onclose = function(event) {
             console.log(event);
             var ta = document.getElementById('responseText');
-            ta.value = ta.value + "连接被关闭";
+            ta.value = ta.value + "连接被关闭,尝试重连";
+            reconnect("ws://192.168.1.105:8090/ws");
         };
     } else {
         alert("你的浏览器不支持 WebSocket！");
@@ -141,6 +144,49 @@
             alert("连接没有开启.");
         }
     }
+
+    var lockReconnect = false;
+    var tt;
+    //重连
+    function reconnect(url) {
+        if(lockReconnect) {
+            return;
+        };
+        lockReconnect = true;
+        //没连接上会一直重连，设置延迟避免请求过多
+        tt && clearTimeout(tt);
+        tt = setTimeout(function () {
+            socket = new WebSocket("ws://192.168.1.105:8090/ws");
+            lockReconnect = false;
+        }, 4000);
+    }
+
+    //心跳检测
+    var heartCheck = {
+        timeout: 10000,
+        timeoutObj: null,
+        serverTimeoutObj: null,
+        start: function(){
+            console.log('start');
+            var self = this;
+            this.timeoutObj && clearTimeout(this.timeoutObj);
+            this.serverTimeoutObj && clearTimeout(this.serverTimeoutObj);
+            this.timeoutObj = setTimeout(function(){
+                //这里发送一个心跳，后端收到后，返回一个心跳消息，
+                var message = {
+                    type: "heartCheck",
+                    value: null
+                }
+                socket.send(JSON.stringify(message));
+                self.serverTimeoutObj = setTimeout(function() {
+                    console.log(111);
+                    socket.close();
+                }, self.timeout);
+
+            }, this.timeout)
+        }
+    }
+
 
 
     window.onbeforeunload = function(event) {
