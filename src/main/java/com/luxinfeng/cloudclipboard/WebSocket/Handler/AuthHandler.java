@@ -7,7 +7,10 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @ChannelHandler.Sharable
 public class AuthHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     @Override
@@ -24,21 +27,23 @@ public class AuthHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
                 System.out.println(code);
                 codeContainer.addCode(code);
                 channelHandlerContext.writeAndFlush(new TextWebSocketFrame("code"+code));
-                System.out.println("成功获取登录码");
+                log.info("成功获取登录码");
             }else if(type.equals("login")){
                 String code = jsonObject.get("token").toString();
                 if(codeContainer.containsCode(code)==null){
-                    System.out.println("当前登录码无效，请重新获取登录码");
+                    log.error("当前登录码无效，请重新获取登录码");
+                    channelHandlerContext.writeAndFlush("当前登录码无效，请重新获取登录码");
                     channelHandlerContext.close();
                 }else{
                     codeContainer.addUser(code,channelHandlerContext);
-                    System.out.println("登录成功");
+                    log.info("登录成功");
                     channelHandlerContext.pipeline().remove(this);
                 }
             }
         } catch (Exception e) {
             System.out.println("exception happen for:" + e.getMessage());
             channelHandlerContext.writeAndFlush("clip请稍后再试");
+            log.error("clip请稍后再试");
             channelHandlerContext.close();
         }
     }

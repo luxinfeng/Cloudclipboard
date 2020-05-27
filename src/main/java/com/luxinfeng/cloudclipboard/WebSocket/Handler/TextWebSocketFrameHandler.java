@@ -2,20 +2,20 @@ package com.luxinfeng.cloudclipboard.WebSocket.Handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.luxinfeng.cloudclipboard.WebSocket.LoginConfig.CodeContainer;
-import com.luxinfeng.cloudclipboard.WebSocket.util.LoginCode;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 /**
  * @author 新峰
  */
-
+@Slf4j
 @ChannelHandler.Sharable
 public class TextWebSocketFrameHandler
         extends SimpleChannelInboundHandler<TextWebSocketFrame> {
@@ -47,20 +47,20 @@ public class TextWebSocketFrameHandler
 
         CodeContainer codeContainer = new CodeContainer();
         if(type.equals("sendGroup")){
-            System.out.println("成功发送到多设备");
+            log.info("成功发送到多设备");
             String code = jsonObject.get("token").toString();
             if(codeContainer.containsCode(code)!=null){
                 List<ChannelHandlerContext> list = codeContainer.getUser(code);
                 System.out.println(list.size());
                 for(ChannelHandlerContext user:list){
-                    System.out.println(jsonObject.get("value"));
+                    log.info(jsonObject.get("value").toString());
                     user.writeAndFlush(new TextWebSocketFrame("clip"+jsonObject.get("value").toString()));
 
                 }
             }
         }else if(type.equals("heartCheck")){
             ctx.writeAndFlush(new TextWebSocketFrame("heartCheck reponse"));
-            System.out.println("This is a heartCheck");
+            log.info("This is a heartCheck");
         }
     }
 

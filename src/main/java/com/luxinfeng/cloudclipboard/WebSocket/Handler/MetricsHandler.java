@@ -29,8 +29,8 @@ public class MetricsHandler extends ChannelDuplexHandler {
         ConsoleReporter consoleReporter = ConsoleReporter.forRegistry(metricRegistry).build();
         consoleReporter.start(10, TimeUnit.SECONDS);
 
-        JmxReporter jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
-        jmxReporter.start();
+//        JmxReporter jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
+//        jmxReporter.start();
 
     }
 
