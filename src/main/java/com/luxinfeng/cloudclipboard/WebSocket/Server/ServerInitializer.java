@@ -28,12 +28,15 @@ public class ServerInitializer extends ChannelInitializer<Channel> {
 
         UnorderedThreadPoolEventExecutor businessGroup = new UnorderedThreadPoolEventExecutor(2, new DefaultThreadFactory("business"));
         MetricsHandler metricsHandler = new MetricsHandler();
+//        BlackListHandler blackListHandler = new BlackListHandler();
         ChannelPipeline pipeline = ch.pipeline();
         //连接数统计
         pipeline.addLast(metricsHandler);
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new ChunkedWriteHandler());
+//        pipeline.addLast(blackListHandler);
         pipeline.addLast(new HttpObjectAggregator(64 * 1024));
+//        pipeline.addLast(blackListHandler);
         pipeline.addLast(new HttpRequestHandler("/ws"));
         //定时清除空闲连接
         pipeline.addLast(new IdleCheckHandler());

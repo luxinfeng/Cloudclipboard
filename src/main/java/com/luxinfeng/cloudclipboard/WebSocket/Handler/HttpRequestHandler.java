@@ -1,5 +1,6 @@
 package com.luxinfeng.cloudclipboard.WebSocket.Handler;
 
+import com.luxinfeng.cloudclipboard.WebSocket.LoginConfig.BlackList;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.SslHandler;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -20,6 +22,7 @@ import java.net.URL;
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final String wsUri;
     private static final File INDEX;
+    private BlackList blackList = new BlackList();
 
     static {
         URL location = HttpRequestHandler.class
@@ -42,6 +45,26 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     @Override
     public void channelRead0(ChannelHandlerContext ctx,
                              FullHttpRequest request) throws Exception {
+
+        log.info("into HttpRequestHandler");
+        if(request instanceof FullHttpRequest){
+            HttpRequest mReq = (HttpRequest) request;
+            String clientIp = mReq.headers().get("X-Forwarded-For");
+            if(clientIp==null){
+                InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
+                clientIp = insocket.getAddress().getHostAddress();
+                log.info(clientIp);
+            }
+            if(blackList.inBlackList(clientIp)){
+                log.error("短时间内多次登录，登录失效");
+                ctx.writeAndFlush("登录失效，请24小时后登录");
+                ctx.close();
+            }else{
+                blackList.put(clientIp);
+            }
+        }
+
+
         if (wsUri.equalsIgnoreCase(request.getUri())) {
             ctx.fireChannelRead(request.retain());
         } else {
@@ -88,5 +111,6 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
         log.error("Http request error");
         ctx.close();
     }
+
 }
 
