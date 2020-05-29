@@ -41,6 +41,9 @@ public class TextWebSocketFrameHandler
     @Override
     public void channelRead0(ChannelHandlerContext ctx,
                              TextWebSocketFrame msg) throws Exception {
+
+
+
         JSONObject jsonObject;
         jsonObject = JSONObject.parseObject(msg.text());
         String type=jsonObject.get("type").toString();

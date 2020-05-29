@@ -1,6 +1,8 @@
 package com.luxinfeng.cloudclipboard.WebSocket.Handler;
 
+import com.luxinfeng.cloudclipboard.WebSocket.Common.SaveInfo;
 import com.luxinfeng.cloudclipboard.WebSocket.LoginConfig.BlackList;
+import com.luxinfeng.cloudclipboard.WebSocket.model.AbnormalUserInfo;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.SslHandler;
@@ -22,12 +24,14 @@ import java.net.URL;
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final String wsUri;
     private static final File INDEX;
+    private static SaveInfo saveInfo;
     private BlackList blackList = new BlackList();
 
     static {
         URL location = HttpRequestHandler.class
                 .getProtectionDomain()
                 .getCodeSource().getLocation();
+        saveInfo = new SaveInfo();
         try {
             String path = location.toURI() + "index.html";
             path = !path.contains("file:") ? path : path.substring(5);
@@ -48,7 +52,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
         log.info("into HttpRequestHandler");
         if(request instanceof FullHttpRequest){
-            HttpRequest mReq = (HttpRequest) request;
+            HttpRequest mReq = request;
             String clientIp = mReq.headers().get("X-Forwarded-For");
             if(clientIp==null){
                 InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
@@ -57,6 +61,8 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
             }
             if(blackList.inBlackList(clientIp)){
                 log.error("短时间内多次登录，登录失效");
+                AbnormalUserInfo abnormalUserInfo = new AbnormalUserInfo(clientIp,String.valueOf(System.currentTimeMillis()));
+                saveInfo.saveInfo(abnormalUserInfo);
                 ctx.writeAndFlush("登录失效，请24小时后登录");
                 ctx.close();
             }else{
