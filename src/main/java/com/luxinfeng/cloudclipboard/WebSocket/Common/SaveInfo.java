@@ -1,13 +1,15 @@
 package com.luxinfeng.cloudclipboard.WebSocket.Common;
 
-import com.luxinfeng.cloudclipboard.WebSocket.model.AbnormalUserInfo;
-import com.luxinfeng.cloudclipboard.WebSocket.model.NormalUserInfo;
+import com.luxinfeng.cloudclipboard.WebSocket.Model.AbnormalUserInfo;
+import com.luxinfeng.cloudclipboard.WebSocket.Model.NormalUserInfo;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@Slf4j
 public class SaveInfo {
 
     private final static String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -15,8 +17,8 @@ public class SaveInfo {
     private static Connection connection;
     private static Statement statement;
 
-    private final static String USER = "root";
-    private final static String PASS = "123456";
+    private final static String USER = "xinfeng";
+    private final static String PASS = "xinfeng666";
 
 
     static {
@@ -25,7 +27,7 @@ public class SaveInfo {
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
             statement = connection.createStatement();
             if (!connection.isClosed()) {
-                System.out.println("数据库连接成功");
+                log.info("数据库连接成功");
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -41,6 +43,7 @@ public class SaveInfo {
         String loginTime = abnormalUserInfo.getLoginTime();
         String sql ="INSERT INTO abnormalUserInfo VALUES " + "("+clientIp + loginTime +")";
         statement.execute(sql);
+        log.info("异常登录信息已保存到数据库");
     }
     public void saveinfo(NormalUserInfo normalUserInfo) throws SQLException {
         String clientIp = normalUserInfo.getClientIp();
@@ -51,6 +54,7 @@ public class SaveInfo {
         long MessageSum = normalUserInfo.getMessageSum();
         String sql ="INSERT INTO abnormalUserInfo VALUES " + "("+clientIp + loginTime + logoutTime + clientMaxSum + clientAvgSum + MessageSum +")";
         statement.execute(sql);
+        log.info("正常登录信息已保存到数据库");
     }
 
 }

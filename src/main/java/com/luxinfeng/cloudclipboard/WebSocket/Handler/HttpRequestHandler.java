@@ -2,7 +2,7 @@ package com.luxinfeng.cloudclipboard.WebSocket.Handler;
 
 import com.luxinfeng.cloudclipboard.WebSocket.Common.SaveInfo;
 import com.luxinfeng.cloudclipboard.WebSocket.LoginConfig.BlackList;
-import com.luxinfeng.cloudclipboard.WebSocket.model.AbnormalUserInfo;
+import com.luxinfeng.cloudclipboard.WebSocket.Model.AbnormalUserInfo;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.SslHandler;
@@ -33,9 +33,14 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 .getCodeSource().getLocation();
         saveInfo = new SaveInfo();
         try {
+            System.out.println(HttpRequestHandler.class.getProtectionDomain().toString());
             String path = location.toURI() + "index.html";
-            path = !path.contains("file:") ? path : path.substring(5);
+            path = path.replace("demo-0.0.1-SNAPSHOT.jar!/BOOT-INF/c","c");
+            path = path.replace("s!","s");
+            path = !path.contains("file:") ? path : path.substring(9); //5
+            log.info(path);
             INDEX = new File(path);
+            System.out.println(INDEX);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(
                     "Unable to locate index.html", e);
@@ -57,7 +62,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
             if(clientIp==null){
                 InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
                 clientIp = insocket.getAddress().getHostAddress();
-                log.info(clientIp);
+                log.info("当前登录IP为："+clientIp);
             }
             if(blackList.inBlackList(clientIp)){
                 log.error("短时间内多次登录，登录失效");

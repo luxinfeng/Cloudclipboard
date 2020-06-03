@@ -10,13 +10,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class IdleCheckHandler extends IdleStateHandler {
     public IdleCheckHandler() {
-        super(20, 0, 0, TimeUnit.SECONDS);
+        super(60,0 , 0, TimeUnit.SECONDS);
     }
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
         if (evt == IdleStateEvent.FIRST_READER_IDLE_STATE_EVENT) {
-            log.info("idle check happen, so close the connection");
+            log.info(ctx.name()+"idle check happen, so close the connection");
             ctx.close();
             return;
         }

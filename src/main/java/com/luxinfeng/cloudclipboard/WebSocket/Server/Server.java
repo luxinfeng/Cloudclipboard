@@ -8,6 +8,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.ImmediateEventExecutor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 
@@ -15,6 +16,8 @@ import java.net.InetSocketAddress;
 /**
  * @author 新峰
  */
+
+@Slf4j
 public class Server {
     private final ChannelGroup channelGroup =
             new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
@@ -48,10 +51,12 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-        int port = 8090;
+        int port = 443;
+//        int port = 8090;
         final Server endpoint = new Server();
         ChannelFuture future = endpoint.start(
                 new InetSocketAddress(port));
+        log.info("启动成功！");
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {

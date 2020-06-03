@@ -1,7 +1,6 @@
-package com.luxinfeng.cloudclipboard.WebSocket.model;
+package com.luxinfeng.cloudclipboard.WebSocket.Model;
 
 import lombok.Data;
-import lombok.Setter;
 
 @Data
 public class AbnormalUserInfo {
