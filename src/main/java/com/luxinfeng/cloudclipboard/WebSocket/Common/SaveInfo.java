@@ -42,10 +42,10 @@ public class SaveInfo {
         String clientIp = abnormalUserInfo.getClientIp();
         String loginTime = abnormalUserInfo.getLoginTime();
         String sql ="INSERT INTO abnormalUserInfo VALUES " + "("+clientIp + loginTime +")";
-        statement.execute(sql);
+//        statement.execute(sql);
         log.info("异常登录信息已保存到数据库");
     }
-    public void saveinfo(NormalUserInfo normalUserInfo) throws SQLException {
+    public void saveInfo(NormalUserInfo normalUserInfo) throws SQLException {
         String clientIp = normalUserInfo.getClientIp();
         String loginTime = normalUserInfo.getLoginTime();
         String logoutTime = normalUserInfo.getLogoutTime();

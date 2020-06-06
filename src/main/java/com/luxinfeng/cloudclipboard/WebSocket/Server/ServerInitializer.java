@@ -46,16 +46,16 @@ public class ServerInitializer extends ChannelInitializer<Channel> {
 
 
         //SSL加密
-        String jksPath = "D:\\Java\\serverStore.jks";
+//        String jksPath = "D:\\Java\\serverStore.jks";
 //        String jksPath = "/home/xinfeng/cloudclipboard/serverStore.jks";
-        SSLContext sslContext = SslContextFactory.getServerContext(jksPath,"nettyDemo","123456");
+//        SSLContext sslContext = SslContextFactory.getServerContext(jksPath,"nettyDemo","123456");
 
-        SSLEngine sslEngine = sslContext.createSSLEngine();
-        sslEngine.setUseClientMode(false);
-        sslEngine.setNeedClientAuth(false);
-        SslHandler sslHandler = new SslHandler(sslEngine);
-
-        pipeline.addLast(sslHandler);
+//        SSLEngine sslEngine = sslContext.createSSLEngine();
+//        sslEngine.setUseClientMode(false);
+//        sslEngine.setNeedClientAuth(false);
+//        SslHandler sslHandler = new SslHandler(sslEngine);
+//
+//        pipeline.addLast(sslHandler);
         //连接数统计
         pipeline.addLast(metricsHandler);
         //定时清除空闲连接

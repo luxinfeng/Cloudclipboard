@@ -1,5 +1,6 @@
 package com.luxinfeng.cloudclipboard.WebSocket.Common;
 
+import com.luxinfeng.cloudclipboard.WebSocket.Util.RedisClient;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
@@ -9,13 +10,13 @@ import java.util.List;
 
 @Slf4j
 public class SaveHistoryInfo {
-    private static Jedis jedis = new Jedis("127.0.0.1", 6379);
+    private static Jedis jedis = RedisClient.getJedis();
 
     public void setHistory(String code,String value){
         String historyCode = "history" + code;
 
         if(jedis.llen(historyCode)>4){
-            jedis.lpop(historyCode);
+            jedis.rpop(historyCode);
         }
         jedis.lpush(historyCode,value);
         log.info(code +"该记录已暂时性保存");

@@ -1,5 +1,7 @@
 package com.luxinfeng.cloudclipboard.WebSocket.LoginConfig;
 
+import com.luxinfeng.cloudclipboard.WebSocket.Util.RedisClient;
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -13,7 +15,7 @@ import java.util.List;
 public class CodeContainer {
     private static HashMap<String, List<ChannelHandlerContext>> map = new HashMap<>();
     private static HashSet<String> set = new HashSet<>();
-    private static Jedis jedis = new Jedis("127.0.0.1", 6379);
+    private static Jedis jedis = RedisClient.getJedis();
 
     public void addCode(String str){
         jedis.setex(str,1800,str);
