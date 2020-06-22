@@ -65,11 +65,13 @@
 <body>
 <script type="text/javascript">
     var socket;
+//    const urlName = "ws://192.168.1.105:8090/ws";
+    const urlName = "wss://ourclipboard.tk/ws";
     if (!window.WebSocket) {
         window.WebSocket = window.MozWebSocket;
     }
     if (window.WebSocket) {
-        socket = new WebSocket("ws://192.168.1.102:8090/ws");//IP地址应更换为证书上的域名
+        socket = new WebSocket(urlName);//IP地址应更换为证书上的域名
         socket.onmessage = function(event) {
             console.log(event);
             console.log("接收到消息");
@@ -93,7 +95,7 @@
             console.log(event);
             var ta = document.getElementById('responseText');
             ta.value = ta.value + "连接被关闭,尝试重连";
-            reconnect("ws://192.168.1.102:8090/ws");
+            reconnect(urlName);
         };
     } else {
         alert("你的浏览器不支持 WebSocket！");
@@ -171,7 +173,7 @@
         //没连接上会一直重连，设置延迟避免请求过多
         tt && clearTimeout(tt);
         tt = setTimeout(function () {
-            socket = new WebSocket("ws://192.168.1.102:8090/ws");
+            socket = new WebSocket(urlName);
             lockReconnect = false;
         }, 4000);
     }
@@ -222,6 +224,6 @@
 </form>
 <br>
 <br>
-<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="//libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 </body>
 </html>

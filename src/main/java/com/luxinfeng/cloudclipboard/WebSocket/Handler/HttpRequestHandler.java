@@ -35,9 +35,9 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
         try {
             System.out.println(HttpRequestHandler.class.getProtectionDomain().toString());
             String path = location.toURI() + "index.html";
-//            path = path.replace("demo-0.0.1-SNAPSHOT.jar!/BOOT-INF/c","c");
-//            path = path.replace("s!","s");
-            path = !path.contains("file:") ? path : path.substring(5); //9//5
+            path = path.replace("demo-0.0.1-SNAPSHOT.jar!/BOOT-INF/c","c");
+            path = path.replace("s!","s");
+            path = !path.contains("file:") ? path : path.substring(9); //9//5
             log.info(path);
             INDEX = new File(path);
             System.out.println(INDEX);

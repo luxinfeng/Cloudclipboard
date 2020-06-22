@@ -51,8 +51,8 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-//        int port = 443;
-        int port = 8090;
+        int port = 443;
+//        int port = 8090;
         final Server endpoint = new Server();
         ChannelFuture future = endpoint.start(
                 new InetSocketAddress(port));
