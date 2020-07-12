@@ -5,6 +5,8 @@
 这是一个基于Netty和WebSocket的云剪贴板。该剪贴板使用网页登录，借助该剪贴板，我们可以实现在多个平台之间传递剪贴板的内容。
 目前只实现了核心功能，只能算是一个比较简陋的demo。接下来会不断更新的。
 
+[在线访问地址](https://ourclipboard.tk)
+
 ## 项目相关
 - [项目研发日志更新](https://github.com/luxinfeng/Cloudclipboard/blob/dev/doc/Project-Log-cn.md)
 - [项目设计思路](https://github.com/luxinfeng/cloudclipboard/blob/dev/doc/design_cn.md)
